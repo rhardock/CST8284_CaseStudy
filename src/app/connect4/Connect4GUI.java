@@ -50,10 +50,34 @@ public class Connect4GUI extends JFrame {
         setVisible(true);
     }
     
+    private void resetGame() {
+        // 1. Clear the data model
+        board.resetBoard();
+        
+        // 2. Clear the visual buttons
+        for (int r = 0; r < 6; r++) {
+            for (int c = 0; c < 7; c++) {
+                buttons[r][c].setBackground(Color.WHITE);
+            }
+        }
+        
+        // 3. Reset the turn to Red
+        currentSymbol = 'R';
+    }
+    
     private void handleMove(int col) {
         if (board.dropPiece(col, currentSymbol)) {
             updateBoardDisplay(); // Go look at the board data and change button colors
-            currentSymbol = (currentSymbol == 'R') ? 'Y' : 'R'; // Switch turn
+            
+            // check if player wins
+            if (board.checkWin(currentSymbol)) {
+                String winner = (currentSymbol == 'R') ? "Red" : "Yellow";
+                JOptionPane.showMessageDialog(this, winner + " Wins!");
+                resetGame(); // You can create a simple method to clear the board
+            } else {
+                currentSymbol = (currentSymbol == 'R') ? 'Y' : 'R';
+            }
+            
         } else {
             JOptionPane.showMessageDialog(this, "Column Full!");
         }
