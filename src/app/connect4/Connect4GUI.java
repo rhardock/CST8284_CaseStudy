@@ -14,6 +14,8 @@ public class Connect4GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Board board;
     private JButton[][] buttons; // Visual representation of the grid
+    
+    private char currentSymbol = 'R'; // Tracks whose turn it is
 
     public Connect4GUI() {
         board = new Board(); // Uses the default 6x7 constructor (Overloading)
@@ -32,6 +34,13 @@ public class Connect4GUI extends JFrame {
             for (int c = 0; c < 7; c++) {
                 buttons[r][c] = new JButton();
                 buttons[r][c].setBackground(Color.WHITE);
+                
+                // Captured for the Lambda below
+                final int col = c; 
+                
+                // This tells the button: "When clicked, run the handleMove method for this column"
+                buttons[r][c].addActionListener(e -> handleMove(col));
+                
                 add(buttons[r][c]);
             }
         }
@@ -39,6 +48,25 @@ public class Connect4GUI extends JFrame {
         pack(); // Sizes the window to fit the buttons
         setSize(700, 600);
         setVisible(true);
+    }
+    
+    private void handleMove(int col) {
+        if (board.dropPiece(col, currentSymbol)) {
+            updateBoardDisplay(); // Go look at the board data and change button colors
+            currentSymbol = (currentSymbol == 'R') ? 'Y' : 'R'; // Switch turn
+        } else {
+            JOptionPane.showMessageDialog(this, "Column Full!");
+        }
+    }
+
+    private void updateBoardDisplay() {
+        char[][] grid = board.getGrid(); // Get the "Truth" from the Board object
+        for (int r = 0; r < 6; r++) {
+            for (int c = 0; c < 7; c++) {
+                if (grid[r][c] == 'R') buttons[r][c].setBackground(Color.RED);
+                else if (grid[r][c] == 'Y') buttons[r][c].setBackground(Color.YELLOW);
+            }
+        }
     }
 
     public static void main(String[] args) {

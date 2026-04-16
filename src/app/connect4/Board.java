@@ -26,4 +26,14 @@ public class Board {
     }
 
     public char[][] getGrid() { return grid; }
+    
+    public boolean dropPiece(int col, char symbol) {
+        for (int r = 5; r >= 0; r--) { // Start at the bottom row
+            if (grid[r][col] == ' ') { // If spot is empty
+                grid[r][col] = symbol; // Place the piece
+                return true;           // Success!
+            }
+        }
+        return false; // Column was full
+    }
 }
