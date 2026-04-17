@@ -125,7 +125,7 @@ public class Connect4GUI extends JFrame {
             }
         }
 
-        // 3. Reset the turn to Red
+        // 3. Reset the turn to Red - red goes first
         currentSymbol = 'R';
     }
 
@@ -215,7 +215,7 @@ public class Connect4GUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Use the event dispatch thread for Swing for "suitable coding"
+        // Use the event dispatch thread for Swing
         SwingUtilities.invokeLater(() -> new Connect4GUI());
     }
 }
