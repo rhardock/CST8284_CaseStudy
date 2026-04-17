@@ -17,6 +17,7 @@ public class Connect4GUI extends JFrame {
     private GamePrefs prefs;
     private int totalWins;
     private int totalLosses;
+    private JLabel statsLabel; // To display wins and losses
     
     private char currentSymbol = 'R'; // Tracks whose turn it is
 
@@ -41,9 +42,14 @@ public class Connect4GUI extends JFrame {
     	setTitle("CST8284 Connect 4 - " + rows + "x" + cols);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        setLayout(new GridLayout(rows, cols)); // Matches the board dimensions
-
-        // Create the buttons for the grid
+        // 1. Create the stats label
+        statsLabel = new JLabel("Wins: " + totalWins + " | Losses: " + totalLosses, SwingConstants.CENTER);
+        statsLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        statsLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        add(statsLabel, BorderLayout.NORTH); 
+        
+        // 2. Create the grid panel
+        JPanel gridPanel = new JPanel(new GridLayout(rows, cols));
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 buttons[r][c] = new JButton();
@@ -55,13 +61,42 @@ public class Connect4GUI extends JFrame {
                 // This tells the button: "When clicked, run the handleMove method for this column"
                 buttons[r][c].addActionListener(e -> handleMove(col));
                 
-                add(buttons[r][c]);
+                gridPanel.add(buttons[r][c]);
             }
         }
+        add(gridPanel, BorderLayout.CENTER);
 
         pack(); // Sizes the window to fit the buttons
-        setSize(cols * 100, rows * 100);
+        setSize(cols * 100, rows * 100 + 50);
         setVisible(true);
+        
+        setupMenu();
+    }
+    
+    private void setupMenu() {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem settingsItem = new JMenuItem("Settings");
+        JMenuItem quitItem = new JMenuItem("Quit");
+        
+        settingsItem.addActionListener(e -> {
+            SettingsDialog dialog = new SettingsDialog(this, prefs);
+            dialog.setVisible(true);
+            if (dialog.isConfirmed()) {
+                dispose(); // Close current game
+                new Connect4GUI(); // Restart with new dimensions from GamePrefs
+            }
+        });
+        
+        // Simple exit logic
+        quitItem.addActionListener(e -> System.exit(0));
+
+        fileMenu.add(settingsItem);
+        fileMenu.addSeparator(); // Adds a nice visual line
+        fileMenu.add(quitItem);
+        
+        menuBar.add(fileMenu);
+        setJMenuBar(menuBar);
     }
     
     private void resetGame() {
@@ -89,6 +124,16 @@ public class Connect4GUI extends JFrame {
             // check if player wins
             if (board.checkWin(currentSymbol)) {
                 String winner = (currentSymbol == 'R') ? "Red" : "Yellow";
+                
+                if (currentSymbol == 'R') totalWins++; 
+                else totalLosses++;
+                
+                // Update the visual label
+                statsLabel.setText("Wins: " + totalWins + " | Losses: " + totalLosses);
+                
+                // Persist to file
+                prefs.save(board.getRows(), board.getCols(), totalWins, totalLosses);
+                
                 JOptionPane.showMessageDialog(this, winner + " Wins!");
                 resetGame(); // You can create a simple method to clear the board
             } else {
