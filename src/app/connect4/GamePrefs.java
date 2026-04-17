@@ -21,15 +21,17 @@ public class GamePrefs {
             props.setProperty("cols", "7");
             props.setProperty("winCount", "0");
             props.setProperty("lossCount", "0");
+            props.setProperty("drawCount", "0");
         }
     }
 
     // Save settings to disk
-    public void save(int rows, int cols, int wins, int losses) {
+    public void save(int rows, int cols, int wins, int losses, int draws) {
         props.setProperty("rows", String.valueOf(rows));
         props.setProperty("cols", String.valueOf(cols));
         props.setProperty("winCount", String.valueOf(wins));
         props.setProperty("lossCount", String.valueOf(losses));
+        props.setProperty("drawCount", String.valueOf(draws));
 
         try (FileOutputStream out = new FileOutputStream(FILE_PATH)) {
             props.store(out, "Connect 4 User Preferences");
@@ -38,8 +40,9 @@ public class GamePrefs {
         }
     }
 
-    public int getRows() { return Integer.parseInt(props.getProperty("rows")); }
-    public int getCols() { return Integer.parseInt(props.getProperty("cols")); }
-    public int getWinCount() { return Integer.parseInt(props.getProperty("winCount")); }
-    public int getLossCount() { return Integer.parseInt(props.getProperty("lossCount")); }
+    public int getRows() { return Integer.parseInt(props.getProperty("rows", "6")); }
+    public int getCols() { return Integer.parseInt(props.getProperty("cols", "7")); }
+    public int getWinCount() { return Integer.parseInt(props.getProperty("winCount", "0")); }
+    public int getLossCount() { return Integer.parseInt(props.getProperty("lossCount", "0")); }
+    public int getDrawCount() { return Integer.parseInt(props.getProperty("drawCount", "0")); }
 }

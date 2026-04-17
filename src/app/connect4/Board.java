@@ -18,7 +18,7 @@ public class Board {
         this.grid = new char[rows][cols];
         resetBoard();
     }
-    
+
     // ENCAPSULATION: Public getters for private fields
     public int getRows() {
         return rows;
@@ -26,7 +26,7 @@ public class Board {
 
     public int getCols() {
         return cols;
-    }    
+    }
 
     public void resetBoard() {
         for (int r = 0; r < rows; r++)
@@ -35,7 +35,7 @@ public class Board {
     }
 
     public char[][] getGrid() { return grid; }
-    
+
     public boolean dropPiece(int col, char symbol) {
     	// Dynamically start at the last row index
         for (int r = rows - 1; r >= 0; r--) {
@@ -46,9 +46,9 @@ public class Board {
         }
         return false; // Column was full
     }
-    
+
     public boolean checkWin(char symbol) {
-    	
+
     	// Horizontal check
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols - 3; c++) {
@@ -90,5 +90,14 @@ public class Board {
         }
         return false;
     }
-    
+
+    public boolean isFull() {
+        for (int c = 0; c < cols; c++) {
+            if (grid[0][c] == ' ') { // If top row has an empty spot
+                return false;
+            }
+        }
+        return true; // All columns are full
+    }
+
 }

@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class SettingsDialog extends JDialog {
     /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTextField rowsField;
@@ -30,9 +30,9 @@ public class SettingsDialog extends JDialog {
 
         JButton saveBtn = new JButton("Save & Restart");
         saveBtn.addActionListener(e -> handleSave());
-        
+
         add(saveBtn);
-        
+
         pack();
         setLocationRelativeTo(parent);
     }
@@ -41,7 +41,7 @@ public class SettingsDialog extends JDialog {
         try {
             int r = Integer.parseInt(rowsField.getText());
             int c = Integer.parseInt(colsField.getText());
-            
+
             // Basic validation for "suitable coding"
             if (r < 4 || c < 4) {
                 JOptionPane.showMessageDialog(this, "Board must be at least 4x4.");
@@ -49,7 +49,7 @@ public class SettingsDialog extends JDialog {
             }
 
             // Persistence: Using your GamePrefs I/O logic
-            prefs.save(r, c, prefs.getWinCount(), prefs.getLossCount());
+            prefs.save(r, c, prefs.getWinCount(), prefs.getLossCount(), prefs.getDrawCount());
             confirmed = true;
             dispose();
         } catch (NumberFormatException e) {
