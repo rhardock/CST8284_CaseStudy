@@ -20,11 +20,11 @@ public class SettingsDialog extends JDialog {
         setLayout(new GridLayout(3, 2, 10, 10));
 
         // Use Encapsulation: fields are private, accessed through the dialog logic
-        add(new JLabel("  Rows (4-10):"));
+        add(new JLabel("  Rows (4+):"));
         rowsField = new JTextField(String.valueOf(prefs.getRows()));
         add(rowsField);
 
-        add(new JLabel("  Columns (4-10):"));
+        add(new JLabel("  Columns (4+):"));
         colsField = new JTextField(String.valueOf(prefs.getCols()));
         add(colsField);
 
