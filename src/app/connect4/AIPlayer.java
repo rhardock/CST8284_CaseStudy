@@ -28,13 +28,15 @@ public class AIPlayer extends Player {
         // 3. Fallback: Pick a random valid column
         ArrayList<Integer> validCols = new ArrayList<>();
         for (int c = 0; c < cols; c++) {
-            // Check if column isn't full (using your dropPiece logic)
+            // Check if column isn't full (using the dropPiece logic)
             if (isColumnValid(board, c)) {
                 validCols.add(c);
             }
         }
 
         if (validCols.isEmpty()) return -1; // Board full
+
+        // return a random valid column
         return validCols.get(rand.nextInt(validCols.size()));
     }
 

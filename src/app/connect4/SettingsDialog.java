@@ -48,7 +48,7 @@ public class SettingsDialog extends JDialog {
                 return;
             }
 
-            // Persistence: Using your GamePrefs I/O logic
+            // Persistence: Using GamePrefs I/O logic
             prefs.save(r, c, prefs.getWinCount(), prefs.getLossCount(), prefs.getDrawCount());
             confirmed = true;
             dispose();
