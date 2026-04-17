@@ -67,7 +67,9 @@ public class Connect4GUI extends JFrame {
         add(gridPanel, BorderLayout.CENTER);
 
         pack(); // Sizes the window to fit the buttons
-        setSize(cols * 100, rows * 100 + 50);
+        setSize(500, 550); // an initial size that should fit on most monitors
+        
+        setLocationRelativeTo(null); // centers the window on the screen
         setVisible(true);
         
         setupMenu();
