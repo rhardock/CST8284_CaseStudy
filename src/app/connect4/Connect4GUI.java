@@ -14,24 +14,38 @@ public class Connect4GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Board board;
     private JButton[][] buttons; // Visual representation of the grid
+    private GamePrefs prefs;
+    private int totalWins;
+    private int totalLosses;
     
     private char currentSymbol = 'R'; // Tracks whose turn it is
 
     public Connect4GUI() {
-        board = new Board(); // Uses the default 6x7 constructor (Overloading)
-        buttons = new JButton[6][7];
+    	prefs = new GamePrefs();
+    	
+    	int rows = prefs.getRows();
+    	int cols = prefs.getCols();
+    	this.totalWins = prefs.getWinCount();
+    	this.totalLosses = prefs.getLossCount();
+    	
+        board = new Board(rows, cols); // Uses the default 6x7 constructor (Overloading)
+        buttons = new JButton[rows][cols];
         
         setupUI();
     }
 
     private void setupUI() {
-        setTitle("CST8284 Connect 4 - " + board.getGrid().length + "x" + board.getGrid()[0].length);
+    	
+    	int rows = board.getRows();
+        int cols = board.getCols();
+    	setTitle("CST8284 Connect 4 - " + rows + "x" + cols);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(6, 7)); // Matches the board dimensions
+        
+        setLayout(new GridLayout(rows, cols)); // Matches the board dimensions
 
         // Create the buttons for the grid
-        for (int r = 0; r < 6; r++) {
-            for (int c = 0; c < 7; c++) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
                 buttons[r][c] = new JButton();
                 buttons[r][c].setBackground(Color.WHITE);
                 
@@ -46,7 +60,7 @@ public class Connect4GUI extends JFrame {
         }
 
         pack(); // Sizes the window to fit the buttons
-        setSize(700, 600);
+        setSize(cols * 100, rows * 100);
         setVisible(true);
     }
     
@@ -54,9 +68,12 @@ public class Connect4GUI extends JFrame {
         // 1. Clear the data model
         board.resetBoard();
         
+        int rows = board.getRows();
+        int cols = board.getCols();
+        
         // 2. Clear the visual buttons
-        for (int r = 0; r < 6; r++) {
-            for (int c = 0; c < 7; c++) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
                 buttons[r][c].setBackground(Color.WHITE);
             }
         }
@@ -84,9 +101,13 @@ public class Connect4GUI extends JFrame {
     }
 
     private void updateBoardDisplay() {
-        char[][] grid = board.getGrid(); // Get the "Truth" from the Board object
-        for (int r = 0; r < 6; r++) {
-            for (int c = 0; c < 7; c++) {
+        char[][] grid = board.getGrid();
+        
+        int rows = board.getRows();
+        int cols = board.getCols();
+        
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
                 if (grid[r][c] == 'R') buttons[r][c].setBackground(Color.RED);
                 else if (grid[r][c] == 'Y') buttons[r][c].setBackground(Color.YELLOW);
             }
